@@ -3,6 +3,7 @@ using BancoMedellin.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BancoMedellin.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220401053809_UsuariosData")]
+    partial class UsuariosData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,12 +54,6 @@ namespace BancoMedellin.Server.Migrations
                             Dni = 1001m,
                             Nombre = "Daniela Fonseca",
                             Password = "1243"
-                        },
-                        new
-                        {
-                            Dni = 1002m,
-                            Nombre = "Juan Sebastian Fonseca",
-                            Password = "1244"
                         });
                 });
 #pragma warning restore 612, 618
