@@ -2,9 +2,11 @@ global using BancoMedellin.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Design;
 global using System.ComponentModel.DataAnnotations;
+global using BancoMedellin.Server.Data;
+global using BancoMedellin.Server.Services.UsuarioService;
 
-using BancoMedellin.Server.Data;
 using Microsoft.AspNetCore.ResponseCompression;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +18,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-var app = builder.Build();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+var app = builder.Build();
+app.UseSwaggerUI();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -29,6 +35,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSwagger();
 
 app.UseHttpsRedirection();
 

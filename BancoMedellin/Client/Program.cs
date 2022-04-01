@@ -1,3 +1,4 @@
+global using BancoMedellin.Shared;
 using BancoMedellin.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
