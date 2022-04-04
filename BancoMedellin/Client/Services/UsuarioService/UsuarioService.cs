@@ -13,7 +13,7 @@ namespace BancoMedellin.Client.Services.UsuarioService
 
         public async Task GetUsuarios()
         {
-            Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("api/usuario/getallusuarios");
+            Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("api/usuario");
         }
     }
 }

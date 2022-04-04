@@ -4,6 +4,7 @@ using BancoMedellin.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BancoMedellin.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220404100436_Inicial")]
+    partial class Inicial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,44 +53,6 @@ namespace BancoMedellin.Server.Migrations
                     b.HasIndex("UsuarioDni");
 
                     b.ToTable("Cuentas");
-                });
-
-            modelBuilder.Entity("BancoMedellin.Shared.Transferencia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CuentaCredito")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CuentaDebito")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<decimal>("UsuarioDni")
-                        .HasColumnType("decimal(20,0)");
-
-                    b.Property<decimal>("Valor")
-                        .IsConcurrencyToken()
-                        .HasColumnType("decimal(20,0)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CuentaCredito");
-
-                    b.HasIndex("CuentaDebito");
-
-                    b.HasIndex("UsuarioDni");
-
-                    b.ToTable("Transferencias");
                 });
 
             modelBuilder.Entity("BancoMedellin.Shared.Usuario", b =>
@@ -148,45 +112,9 @@ namespace BancoMedellin.Server.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("BancoMedellin.Shared.Transferencia", b =>
-                {
-                    b.HasOne("BancoMedellin.Shared.Cuenta", "Debito")
-                        .WithMany("TransferenciasCredito")
-                        .HasForeignKey("CuentaCredito")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BancoMedellin.Shared.Cuenta", "Credito")
-                        .WithMany("TransferenciasDebito")
-                        .HasForeignKey("CuentaDebito")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BancoMedellin.Shared.Usuario", "Usuario")
-                        .WithMany("Transferencias")
-                        .HasForeignKey("UsuarioDni")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Credito");
-
-                    b.Navigation("Debito");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("BancoMedellin.Shared.Cuenta", b =>
-                {
-                    b.Navigation("TransferenciasCredito");
-
-                    b.Navigation("TransferenciasDebito");
-                });
-
             modelBuilder.Entity("BancoMedellin.Shared.Usuario", b =>
                 {
                     b.Navigation("Cuentas");
-
-                    b.Navigation("Transferencias");
                 });
 #pragma warning restore 612, 618
         }

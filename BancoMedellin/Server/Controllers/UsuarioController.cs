@@ -13,7 +13,7 @@ namespace BancoMedellin.Server.Controllers
             _usuarioService = usuarioService;
         }
 
-        [HttpGet("getallusuarios")]
+        [HttpGet]
         public async Task<ActionResult<List<Usuario>>> GetAll()
         {
             try
@@ -26,8 +26,8 @@ namespace BancoMedellin.Server.Controllers
         }
 
         //[HttpGet("{id}")]
-        //[Route(Route = "getUsuarioById")]
-        //public async Task<ActionResult<<Usuario>>> GetUsuarioById(ulong id)
+        //[Route("getUsuarioById")]
+        //public async Task<ActionResult<Usuario>> GetUsuarioById(ulong id)
         //{
         //    try
         //    {

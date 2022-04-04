@@ -1,0 +1,27 @@
+﻿@page "/usuarios"
+@inject IUsuarioService UsuarioService
+
+<PageTitle>Usuarios</PageTitle>
+<h3>Usuarios</h3>
+
+@if(UsuarioService.Usuarios.Count <= 0)
+{
+    <span>Cargando...</span>
+}
+else
+{
+    <ul>
+        @foreach (var usuario in UsuarioService.Usuarios)
+        {
+            <li>@usuario.Nombre</li>
+        }
+    </ul>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await UsuarioService.GetUsuarios();
+    }
+}

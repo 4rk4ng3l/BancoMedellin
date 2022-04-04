@@ -4,6 +4,7 @@ global using Microsoft.EntityFrameworkCore.Design;
 global using System.ComponentModel.DataAnnotations;
 global using BancoMedellin.Server.Data;
 global using BancoMedellin.Server.Services.UsuarioService;
+global using BancoMedellin.Server.Services.CuentaService;
 
 using Microsoft.AspNetCore.ResponseCompression;
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<ICuentaService, CuentaService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

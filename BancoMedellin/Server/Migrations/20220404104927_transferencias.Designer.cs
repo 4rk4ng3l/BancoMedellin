@@ -4,6 +4,7 @@ using BancoMedellin.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BancoMedellin.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220404104927_transferencias")]
+    partial class transferencias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,8 +87,6 @@ namespace BancoMedellin.Server.Migrations
                     b.HasIndex("CuentaCredito");
 
                     b.HasIndex("CuentaDebito");
-
-                    b.HasIndex("UsuarioDni");
 
                     b.ToTable("Transferencias");
                 });
@@ -162,17 +162,9 @@ namespace BancoMedellin.Server.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BancoMedellin.Shared.Usuario", "Usuario")
-                        .WithMany("Transferencias")
-                        .HasForeignKey("UsuarioDni")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Credito");
 
                     b.Navigation("Debito");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("BancoMedellin.Shared.Cuenta", b =>
@@ -185,8 +177,6 @@ namespace BancoMedellin.Server.Migrations
             modelBuilder.Entity("BancoMedellin.Shared.Usuario", b =>
                 {
                     b.Navigation("Cuentas");
-
-                    b.Navigation("Transferencias");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,6 @@
     public interface IUsuarioService
     {
        Task<List<Usuario>> GetAll();
-       Task<Usuario> GetById(ulong Dni);
+       //Task<Usuario> GetById(ulong Dni);
     }
 }
