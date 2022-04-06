@@ -22,6 +22,55 @@ namespace BancoMedellin.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("BancoMedellin.Shared.Autorizada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CuentaId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UsuarioDni")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CuentaId");
+
+                    b.HasIndex("UsuarioDni");
+
+                    b.ToTable("Autorizadas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CuentaId = 3,
+                            UsuarioDni = 77185581m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CuentaId = 4,
+                            UsuarioDni = 77185581m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CuentaId = 1,
+                            UsuarioDni = 1001m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CuentaId = 2,
+                            UsuarioDni = 1001m
+                        });
+                });
+
             modelBuilder.Entity("BancoMedellin.Shared.Cuenta", b =>
                 {
                     b.Property<int>("Id")
@@ -51,6 +100,43 @@ namespace BancoMedellin.Server.Migrations
                     b.HasIndex("UsuarioDni");
 
                     b.ToTable("Cuentas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Balance = 50000m,
+                            NombreCuenta = "Vivienda",
+                            UsuarioDni = 77185581m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Balance = 90000m,
+                            NombreCuenta = "Vehiculo",
+                            UsuarioDni = 77185581m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Balance = 90000m,
+                            NombreCuenta = "Universidad",
+                            UsuarioDni = 1001m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Balance = 70000m,
+                            NombreCuenta = "Excursion",
+                            UsuarioDni = 1001m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Balance = 170000m,
+                            NombreCuenta = "España",
+                            UsuarioDni = 1002m
+                        });
                 });
 
             modelBuilder.Entity("BancoMedellin.Shared.Transferencia", b =>
@@ -89,6 +175,16 @@ namespace BancoMedellin.Server.Migrations
                     b.HasIndex("UsuarioDni");
 
                     b.ToTable("Transferencias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CuentaCredito = 2,
+                            CuentaDebito = 1,
+                            UsuarioDni = 77185581m,
+                            Valor = 30000m
+                        });
                 });
 
             modelBuilder.Entity("BancoMedellin.Shared.Usuario", b =>
@@ -116,7 +212,7 @@ namespace BancoMedellin.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Dni = 771185581m,
+                            Dni = 77185581m,
                             Nombre = "German Fonseca P",
                             Password = "1234",
                             UsuarioDni = 0m
@@ -135,6 +231,25 @@ namespace BancoMedellin.Server.Migrations
                             Password = "1244",
                             UsuarioDni = 0m
                         });
+                });
+
+            modelBuilder.Entity("BancoMedellin.Shared.Autorizada", b =>
+                {
+                    b.HasOne("BancoMedellin.Shared.Cuenta", "Cuenta")
+                        .WithMany("Autorizadas")
+                        .HasForeignKey("CuentaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BancoMedellin.Shared.Usuario", "Usuario")
+                        .WithMany("Autorizadas")
+                        .HasForeignKey("UsuarioDni")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Cuenta");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("BancoMedellin.Shared.Cuenta", b =>
@@ -177,6 +292,8 @@ namespace BancoMedellin.Server.Migrations
 
             modelBuilder.Entity("BancoMedellin.Shared.Cuenta", b =>
                 {
+                    b.Navigation("Autorizadas");
+
                     b.Navigation("TransferenciasCredito");
 
                     b.Navigation("TransferenciasDebito");
@@ -184,6 +301,8 @@ namespace BancoMedellin.Server.Migrations
 
             modelBuilder.Entity("BancoMedellin.Shared.Usuario", b =>
                 {
+                    b.Navigation("Autorizadas");
+
                     b.Navigation("Cuentas");
 
                     b.Navigation("Transferencias");

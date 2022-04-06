@@ -16,17 +16,10 @@ namespace BancoMedellin.Shared
         [Required]
         public ulong UsuarioDni { get; set; }
         [Required]
-        public ulong CuentaId { get; set; }
+        public int CuentaId { get; set; }
        
-
-        ////Relaciones
-        //public ulong Dni { get; set; }
-        //public ICollection<Usuario> usuario { get; set; } 
-
-        //public 
-        //public ICollection<Cuenta> cuenta { get; set; }  
-
-       
+        public Cuenta Cuenta { get; set; }
+        public Usuario Usuario { get; set; }
 
     }
 }

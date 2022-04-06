@@ -25,19 +25,18 @@ namespace BancoMedellin.Server.Controllers
             }
         }
 
-        //[HttpGet("{id}")]
-        //[Route("getUsuarioById")]
-        //public async Task<ActionResult<Usuario>> GetUsuarioById(ulong id)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _usuarioService.GetById(ulong id));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpGet]
+        public async Task<ActionResult<Usuario>> GetUsuarioById(ulong id)
+        {
+            try
+            {
+                return Ok(await _usuarioService.GetUsuarioById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

@@ -24,11 +24,19 @@ namespace BancoMedellin.Server.Services.UsuarioService
             }
             
         }
-        //[HttpGet]
-        //public async Task<Usuario> GetById(ulong Dni)
-        //{
-        //    var usuario = await _context.Usuarios.SingleAsync(u => u.Dni == Dni);
-        //    return usuario;
-        //}
+        [HttpGet("{id}")]
+        public async Task<Usuario>GetUsuarioById(ulong Dni)
+        {
+            var usuario = await _context.Usuarios.SingleAsync(u => u.Dni == Dni);
+            if(usuario is not null)
+            {
+                return usuario;
+            }
+            else
+            {
+                return new Usuario();   
+            }
+            
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace BancoMedellin.Server.Data
         public DbSet<Usuario>Usuarios { get; set; }
         public DbSet<Cuenta> Cuentas { get; set; }
         public DbSet<Transferencia> Transferencias { get; set; }
-        //public DbSet<Autorizada> Autorizadas { get; set; }   
+        public DbSet<Autorizada> Autorizadas { get; set; }   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,8 +35,21 @@ namespace BancoMedellin.Server.Data
                 .HasForeignKey(p => p.UsuarioDni)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Autorizada>()
+                .HasOne(p => p.Usuario)
+                .WithMany(y => y.Autorizadas)
+                .HasForeignKey(p => p.UsuarioDni)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Autorizada>()
+                .HasOne(p => p.Cuenta)
+                .WithMany(y => y.Autorizadas)
+                .HasForeignKey(p => p.CuentaId);
 
             modelBuilder.ApplyConfiguration(new UsuarioConfiguracion());
+            modelBuilder.ApplyConfiguration(new CuentaConfiguracion());
+            modelBuilder.ApplyConfiguration(new TransferenciaConfiguracion());
+            modelBuilder.ApplyConfiguration(new AutorizadaConfiguracion());
         }
     }
 }

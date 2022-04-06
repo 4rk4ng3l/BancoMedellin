@@ -21,6 +21,6 @@ namespace BancoMedellin.Shared
         public List<Cuenta> Cuentas { get; set; }
 
         public List<Transferencia> Transferencias { get; set; }
-        //public ICollection<Autorizada> autorizada { get; set; }
+        public List<Autorizada> Autorizadas { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace BancoMedellin.Shared
             builder.HasData(
                  new Usuario
                  {
-                     Dni = 771185581,
+                     Dni = 77185581,
                      Nombre = "German Fonseca P",
                      Password = "1234"
                  },

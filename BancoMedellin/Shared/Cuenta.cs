@@ -37,5 +37,7 @@ namespace BancoMedellin.Shared
         //[InverseProperty("Debito")]
         public List<Transferencia> TransferenciasDebito { get; set; }
 
+        public List<Autorizada> Autorizadas { get; set; }
+
     }
 }
