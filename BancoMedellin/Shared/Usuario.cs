@@ -17,9 +17,9 @@ namespace BancoMedellin.Shared
         [Required, MaxLength(4)]
         public string Password { get; set; } = string.Empty;
 
-        public ulong UsuarioDni { get; set; }
-        public List<Cuenta> Cuentas { get; set; }
 
+        //Relaciones
+        public List<Cuenta> Cuentas { get; set; }
         public List<Transferencia> Transferencias { get; set; }
         public List<Autorizada> Autorizadas { get; set; }
     }

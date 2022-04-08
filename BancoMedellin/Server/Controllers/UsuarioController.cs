@@ -14,23 +14,24 @@ namespace BancoMedellin.Server.Controllers
         }
 
         [HttpGet]
+        [Route("GetAll")]
         public async Task<ActionResult<List<Usuario>>> GetAll()
         {
             try
             {
                 return Ok(await _usuarioService.GetAll());
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Usuario>> GetUsuarioById(ulong id)
+        [HttpGet("{Dni}")]
+        public async Task<ActionResult<Usuario>> GetUsuarioById(ulong Dni)
         {
             try
             {
-                return Ok(await _usuarioService.GetUsuarioById(id));
+                return Ok(await _usuarioService.GetUsuarioById(Dni));
             }
             catch (Exception ex)
             {

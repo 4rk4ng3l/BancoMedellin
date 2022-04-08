@@ -13,7 +13,9 @@ else
     <ul>
         @foreach (var usuario in UsuarioService.Usuarios)
         {
+            <li>@usuario.Dni</li>
             <li>@usuario.Nombre</li>
+
         }
     </ul>
 }

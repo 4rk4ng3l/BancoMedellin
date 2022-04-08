@@ -14,7 +14,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
         public async Task<List<Usuario>> GetAll()
         {
             var usuarios = await _context.Usuarios.ToListAsync();
-            if(usuarios is not null)
+            if (usuarios is not null)
             {
                 return usuarios;
             }
@@ -22,21 +22,21 @@ namespace BancoMedellin.Server.Services.UsuarioService
             {
                 return new List<Usuario>();
             }
-            
+
         }
-        [HttpGet("{id}")]
-        public async Task<Usuario>GetUsuarioById(ulong Dni)
+        [HttpGet("{Dni}")]
+        
+        public async Task<Usuario> GetUsuarioById(ulong Dni)
         {
             var usuario = await _context.Usuarios.SingleAsync(u => u.Dni == Dni);
-            if(usuario is not null)
+            if (usuario is not null)
             {
                 return usuario;
             }
             else
             {
-                return new Usuario();   
+                return new Usuario();
             }
-            
         }
     }
 }
