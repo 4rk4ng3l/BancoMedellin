@@ -33,21 +33,21 @@ namespace BancoMedellin.Shared
                  {
                      Id = 3,
                      NombreCuenta = "Universidad",
-                     UsuarioDni = 1001,
+                     UsuarioDni = 11111,
                      Balance = 90000
                  },
                  new Cuenta
                  {
                      Id = 4,
                      NombreCuenta = "Excursion",
-                     UsuarioDni = 1001,
+                     UsuarioDni = 11111,
                      Balance = 70000
                  },
                   new Cuenta
                   {
                       Id = 5,
                       NombreCuenta = "España",
-                      UsuarioDni = 1002,
+                      UsuarioDni = 22222,
                       Balance = 170000
                   }
                 );

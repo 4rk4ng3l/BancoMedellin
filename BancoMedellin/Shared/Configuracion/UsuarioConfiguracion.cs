@@ -13,25 +13,24 @@ namespace BancoMedellin.Shared
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasData(
-                 new Usuario
-                 {
-                     Dni = 77185581,
-                     Nombre = "German Fonseca P",
-                     Password = "1234"
-                 },
-                new Usuario
-                {
-                    Dni = 1001,
-                    Nombre = "Daniela Fonseca",
-                    Password = "1243"
-                },
-                 new Usuario
-                 {
-                     Dni = 1002,
-                     Nombre = "Juan Sebastian Fonseca",
-                     Password = "1244"
-                 }
+                CreateUsuario(77185581, "German Fonseca P", "1111"),
+                CreateUsuario(11111, "Daniela Fonseca", "2222"),
+                CreateUsuario(22222, "Juan Sebastian Fonseca", "3333")
             );
+        }
+
+        private static Usuario CreateUsuario(ulong Dni, string Nombre, string Password)
+        {
+            Utilidades utilidades = new Utilidades();
+            byte[] passwordHash;
+            byte[] passwordSalt;
+            utilidades.createPasswordHash(Password,out passwordHash, out passwordSalt);
+            Usuario usuario = new Usuario();
+            usuario.Dni = Dni;
+            usuario.Nombre = Nombre;
+            usuario.PasswordHash = passwordHash;
+            usuario.PasswordSalt = passwordSalt;
+            return usuario;
         }
     }
 }

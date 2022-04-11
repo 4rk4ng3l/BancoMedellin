@@ -28,13 +28,13 @@ namespace BancoMedellin.Shared
                      new Autorizada
                      {
                          Id = 3,
-                         UsuarioDni = 1001,
+                         UsuarioDni = 11111,
                          CuentaId = 1
                      },
                      new Autorizada
                      {
                          Id = 4,
-                         UsuarioDni = 1001,
+                         UsuarioDni = 11111,
                          CuentaId = 2
                      }
                 );

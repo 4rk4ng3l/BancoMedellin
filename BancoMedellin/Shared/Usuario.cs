@@ -14,8 +14,9 @@ namespace BancoMedellin.Shared
         public ulong Dni { get; set; }
         [Required, MaxLength(64)]
         public string Nombre { get; set; } = string.Empty;
-        [Required, MaxLength(4)]
-        public string Password { get; set; } = string.Empty;
+
+        public byte[]? PasswordHash { get; set; }
+        public byte[]? PasswordSalt { get; set; }
 
 
         //Relaciones

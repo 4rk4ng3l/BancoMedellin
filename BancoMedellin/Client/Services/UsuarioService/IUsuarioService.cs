@@ -3,8 +3,7 @@
     public interface IUsuarioService
     {
         List<Usuario> Usuarios { get; set; }
-
         Task GetUsuarios();
-        //Task<Usuario> GetUsuarioById(ulong Dni);
+        Task GetUsuarioById(ulong Dni);
     }
 }

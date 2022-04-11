@@ -11,8 +11,9 @@ namespace BancoMedellin.Client.Services.UsuarioService
             _http = http;
         }
         public List<Usuario> Usuarios { get; set; } = new List<Usuario>();
-        public Usuario Usuario = new Usuario();
-        
+        public Usuario Usuario = new();
+
+
         public async Task GetUsuarios()
         {
             Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("Api/Usuario/GetAll");
@@ -22,5 +23,7 @@ namespace BancoMedellin.Client.Services.UsuarioService
         {
             Usuario = await _http.GetFromJsonAsync<Usuario>("api/usuario/{Dni}");
         }
+
+       
     }
 }
