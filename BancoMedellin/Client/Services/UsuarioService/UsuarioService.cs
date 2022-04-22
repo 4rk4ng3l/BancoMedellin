@@ -21,22 +21,23 @@ namespace BancoMedellin.Client.Services.UsuarioService
         {
             try
             {
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "api/usuario/getall");
-                var token = await _localStorage.GetItemAsStringAsync("token");
-                requestMessage.Headers.Add("Authorization", "Bearer " + token);
-                //requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //var requestMessage = new HttpRequestMessage(HttpMethod.Get, "api/usuario/getall");
+                //var token = await _localStorage.GetItemAsStringAsync("token");
+                //requestMessage.Headers.Add("Authorization", "Bearer " + token);
+                ////requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await _http.SendAsync(requestMessage);
-                var responseStatusCode = response.StatusCode;
+                //var response = await _http.SendAsync(requestMessage);
+                //var responseStatusCode = response.StatusCode;
 
-                if(responseStatusCode.ToString() == "OK")
-                {
-                    Usuarios = await response.Content.ReadFromJsonAsync<List<Usuario>>();
-                }
+                //if(responseStatusCode.ToString() == "OK")
+                //{
+                //    Usuarios = await response.Content.ReadFromJsonAsync<List<Usuario>>();
+                //}
 
                 //_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                //Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("api/usuario/getall");
-            }catch (Exception ex)
+                Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("api/usuario/getall");
+            }
+            catch (Exception ex)
             {
                 throw;
             }

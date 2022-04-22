@@ -7,7 +7,7 @@ namespace BancoMedellin.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -16,7 +16,7 @@ namespace BancoMedellin.Server.Controllers
             _usuarioService = usuarioService;
         }
         
-        [HttpGet("GetAll"),Authorize]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<Usuario>>> GetAll()
         {
             try
