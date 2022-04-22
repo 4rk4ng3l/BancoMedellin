@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
@@ -6,6 +7,7 @@ namespace BancoMedellin.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -13,9 +15,8 @@ namespace BancoMedellin.Server.Controllers
         {
             _usuarioService = usuarioService;
         }
-
-        [HttpGet]
-        [Route("GetAll")]
+        
+        [HttpGet("GetAll"),Authorize]
         public async Task<ActionResult<List<Usuario>>> GetAll()
         {
             try
@@ -48,7 +49,7 @@ namespace BancoMedellin.Server.Controllers
             }
         }
         
-        [HttpPost("Registrar")]
+        [HttpPost("Registrar"), AllowAnonymous]
         public async Task<ActionResult<Usuario>> Registrar(UsuarioDTO request)
         {
             try
@@ -61,7 +62,7 @@ namespace BancoMedellin.Server.Controllers
             }
             
         }
-        [HttpPost("Login")]
+        [HttpPost("Login"), AllowAnonymous]
         public async Task<ActionResult> Login(UsuarioDTO request)
         {
             try

@@ -1,21 +1,35 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace BancoMedellin.Server.Services.UsuarioService
 {
     public class UsuarioService : IUsuarioService
     {
+        private readonly IHttpContextAccessor _httpContextAccesor;
         private readonly DataContext _context;
-        private readonly IConfiguration _configuration; 
-        public UsuarioService(DataContext context, IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        private Utilidades _util;
+        public UsuarioService(DataContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccesor = httpContextAccessor;
             _context = context;
             _configuration = configuration;
+            _util = new Utilidades();
         }
 
-        [HttpGet]
+        public string GetMyName()
+        {
+            var result = string.Empty;
+            if(_httpContextAccesor.HttpContext != null)
+            {
+                result = _httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return result;
+        }
+
         public async Task<List<Usuario>> GetAll()
         {
             var usuarios = await _context.Usuarios.ToListAsync();
@@ -27,9 +41,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
             {
                 return new List<Usuario>();
             }
-
         }
-        [HttpGet("{Dni}")]
         
         public async Task<Usuario> GetUsuarioByDni(ulong Dni)
         {
@@ -50,34 +62,37 @@ namespace BancoMedellin.Server.Services.UsuarioService
             }
         }
 
-        [HttpPost("Registrar")]
         public async Task<Usuario> Registrar(UsuarioDTO request)
         {
-            Utilidades utilidades = new Utilidades();
-            utilidades.createPasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            Usuario Usuario = new Usuario();
-            Usuario.Dni = request.Dni;
-            Usuario.Nombre = request.Nombre;
-            Usuario.PasswordHash = passwordHash;
-            Usuario.PasswordSalt = passwordSalt;
-            return Usuario;
-            
+            try
+            {
+                _util.createPasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                Usuario Usuario = new Usuario();
+                Usuario.Dni = Convert.ToUInt64(request.Dni);
+                Usuario.Nombre = request.Nombre;
+                Usuario.PasswordHash = passwordHash;
+                Usuario.PasswordSalt = passwordSalt;
+                await _context.Usuarios.AddAsync(Usuario);
+                await _context.SaveChangesAsync();
+                return Usuario;
+            }catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        [HttpPost("login")]
         public async Task<string>Login(UsuarioDTO request)
         {
             try
             {
-                Utilidades utilidades = new Utilidades();
-                Usuario usuario = await GetUsuarioByDni(request.Dni);
+                Usuario usuario = await GetUsuarioByDni(Convert.ToUInt64(request.Dni));
 
                 if (usuario is not null)
                 {
-                    if (utilidades.VerifyPasswordHash(request.Password, usuario.PasswordHash, usuario.PasswordSalt))
+                    if (_util.VerifyPasswordHash(request.Password, usuario.PasswordHash, usuario.PasswordSalt))
                     {
                         string secretKey = _configuration.GetSection("AppSettings:Token").Value;
-                        string token = utilidades.CreateToken(usuario, secretKey);
+                        string token = _util.CreateToken(usuario, secretKey);
 
                         return token;
                     }

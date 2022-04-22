@@ -42,6 +42,7 @@ namespace BancoMedellin.Shared
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, usuario.Nombre),
+                new Claim(ClaimTypes.NameIdentifier, usuario.Dni.ToString()),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey));
@@ -50,7 +51,7 @@ namespace BancoMedellin.Shared
 
             var token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddHours(1),
+                    expires: DateTime.Now.AddDays(1),
                     signingCredentials: cred
                 );
 

@@ -13,13 +13,13 @@
         <span>You're @context.User.Identity.Name</span>
     </Authorized>
     <NotAuthorized>
-        <span>Do you see this</span>
+        <span>You're not authorized, buddy</span>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
     private int currentCount = 0;
-
+    
     private void IncrementCount()
     {
         currentCount++;

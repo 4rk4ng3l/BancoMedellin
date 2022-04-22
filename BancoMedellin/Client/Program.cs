@@ -1,4 +1,5 @@
 global using BancoMedellin.Shared;
+global using Blazored.LocalStorage;
 global using Microsoft.AspNetCore.Components.Authorization;
 using BancoMedellin.Client;
 using BancoMedellin.Client.Services.UsuarioService;
@@ -13,5 +14,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();

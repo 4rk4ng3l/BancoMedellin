@@ -1,18 +1,21 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
 
 namespace BancoMedellin.Client
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
+        private readonly ILocalStorageService _localStorage;
+        public CustomAuthStateProvider(ILocalStorageService localStorage)
+        {
+            _localStorage = localStorage;
+        }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkbmkiOiI3NzE4NTU4MSIsIm5hbWUiOiJKb2huIERvZSIsInBhc3N3b3JkIjoxMjM0fQ.pPBYIdQts1IZlL83-lSpR-HbxOFDprMP5PQUVULiUao";
-
-            var identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-            //var identity = new ClaimsIdentity();
-
+            string token = await _localStorage.GetItemAsStringAsync("token");
+            var identity = new ClaimsIdentity();
+            if (!string.IsNullOrEmpty(token))
+                identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
             var user = new ClaimsPrincipal(identity);
             var state = new AuthenticationState(user);
 
