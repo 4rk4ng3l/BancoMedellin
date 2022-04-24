@@ -22,12 +22,12 @@ namespace BancoMedellin.Server.Services.UsuarioService
 
         public string GetMyName()
         {
-            var result = string.Empty;
+            var name = string.Empty;
             if(_httpContextAccesor.HttpContext != null)
             {
-                result = _httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                name = _httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
             }
-            return result;
+            return name;
         }
 
         public async Task<List<Usuario>> GetAll()
