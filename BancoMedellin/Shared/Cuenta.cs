@@ -16,11 +16,9 @@ namespace BancoMedellin.Shared
         [Required]
         public string NombreCuenta { get; set; }
         [Required]
-        public ulong UsuarioDni { get; set; }
+        public int UsuarioDni { get; set; }
         [Required]
-        public ulong Balance { get; set; }
-        
-
+        public long Balance { get; set; }
         [Timestamp]
         public byte[] Timestamp { get; set; }
 

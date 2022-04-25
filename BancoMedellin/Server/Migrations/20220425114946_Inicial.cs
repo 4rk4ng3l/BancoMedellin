@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BancoMedellin.Server.Migrations
 {
-    public partial class Data : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace BancoMedellin.Server.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Dni = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    Dni = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
@@ -30,8 +30,8 @@ namespace BancoMedellin.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreCuenta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsuarioDni = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    UsuarioDni = table.Column<int>(type: "int", nullable: false),
+                    Balance = table.Column<long>(type: "bigint", nullable: false),
                     Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
@@ -51,7 +51,7 @@ namespace BancoMedellin.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioDni = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    UsuarioDni = table.Column<int>(type: "int", nullable: false),
                     CuentaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -76,10 +76,10 @@ namespace BancoMedellin.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioDni = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    UsuarioDni = table.Column<int>(type: "int", nullable: false),
                     CuentaCredito = table.Column<int>(type: "int", nullable: false),
                     CuentaDebito = table.Column<int>(type: "int", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    Valor = table.Column<long>(type: "bigint", nullable: false),
                     Timestamp = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
@@ -108,28 +108,28 @@ namespace BancoMedellin.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Dni", "Nombre", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 11111m, "Daniela Fonseca", new byte[] { 124, 143, 35, 142, 52, 81, 189, 83, 179, 21, 117, 100, 75, 180, 127, 9, 133, 244, 129, 64, 246, 44, 81, 29, 80, 82, 34, 163, 171, 209, 53, 39, 236, 244, 225, 150, 249, 195, 57, 194, 42, 134, 244, 84, 176, 251, 239, 228, 227, 206, 70, 188, 175, 202, 45, 125, 159, 95, 218, 150, 208, 212, 242, 150 }, new byte[] { 46, 232, 37, 253, 215, 47, 91, 252, 167, 227, 255, 61, 144, 158, 155, 164, 140, 209, 201, 97, 188, 14, 83, 254, 15, 3, 211, 84, 70, 124, 26, 54, 52, 67, 47, 192, 96, 252, 212, 246, 253, 12, 151, 65, 104, 78, 218, 69, 145, 64, 204, 211, 223, 75, 250, 169, 111, 1, 166, 234, 131, 96, 5, 126, 122, 6, 227, 232, 117, 184, 208, 197, 21, 63, 151, 125, 73, 123, 61, 67, 160, 94, 96, 27, 244, 153, 130, 212, 249, 31, 86, 243, 240, 71, 17, 246, 73, 26, 15, 25, 218, 203, 2, 89, 76, 85, 146, 85, 222, 154, 20, 62, 155, 231, 229, 226, 191, 88, 215, 90, 140, 246, 44, 0, 244, 235, 99, 51 } });
+                values: new object[] { 11111, "Daniela Fonseca", new byte[] { 239, 190, 185, 51, 12, 68, 64, 175, 36, 44, 248, 164, 163, 94, 240, 85, 143, 7, 144, 7, 126, 136, 202, 224, 126, 24, 43, 58, 72, 115, 63, 131, 219, 200, 157, 238, 87, 243, 157, 211, 65, 177, 127, 158, 130, 24, 155, 164, 248, 183, 241, 190, 6, 49, 237, 22, 34, 97, 28, 253, 139, 22, 121, 18 }, new byte[] { 6, 125, 78, 31, 90, 58, 50, 120, 135, 235, 24, 138, 50, 65, 241, 114, 86, 150, 215, 184, 81, 252, 252, 103, 171, 39, 105, 78, 7, 221, 235, 244, 226, 26, 48, 87, 235, 156, 28, 67, 94, 39, 131, 146, 101, 12, 148, 125, 183, 113, 150, 225, 11, 95, 236, 50, 136, 81, 151, 220, 177, 65, 199, 11, 13, 7, 93, 206, 200, 74, 3, 211, 206, 110, 84, 5, 141, 125, 106, 245, 216, 49, 77, 17, 61, 65, 29, 112, 102, 189, 30, 81, 158, 52, 88, 240, 240, 188, 4, 252, 252, 14, 2, 218, 219, 218, 130, 149, 36, 8, 37, 73, 23, 45, 48, 136, 176, 64, 156, 252, 202, 70, 156, 209, 254, 130, 124, 254 } });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Dni", "Nombre", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 22222m, "Juan Sebastian Fonseca", new byte[] { 142, 143, 28, 233, 26, 251, 202, 198, 233, 87, 38, 42, 169, 8, 90, 180, 10, 20, 251, 181, 228, 126, 168, 145, 32, 175, 244, 193, 211, 202, 232, 216, 107, 63, 107, 237, 103, 145, 251, 21, 150, 38, 84, 130, 33, 79, 115, 250, 254, 91, 131, 53, 64, 19, 32, 179, 152, 99, 252, 184, 36, 207, 12, 153 }, new byte[] { 219, 250, 93, 171, 55, 176, 73, 196, 55, 226, 115, 206, 33, 158, 42, 127, 48, 13, 234, 144, 148, 22, 123, 62, 79, 181, 103, 152, 143, 171, 158, 43, 33, 34, 156, 247, 106, 101, 92, 217, 23, 153, 167, 149, 79, 34, 156, 222, 225, 37, 119, 51, 137, 60, 119, 165, 86, 66, 55, 8, 144, 186, 208, 242, 189, 212, 89, 168, 58, 242, 150, 131, 30, 36, 127, 151, 224, 174, 107, 45, 86, 170, 144, 17, 235, 4, 163, 97, 45, 214, 190, 184, 221, 189, 192, 27, 72, 58, 232, 95, 2, 163, 73, 102, 93, 246, 62, 240, 165, 112, 101, 141, 32, 145, 1, 63, 45, 242, 231, 10, 147, 253, 81, 102, 44, 105, 53, 109 } });
+                values: new object[] { 22222, "Juan Sebastian Fonseca", new byte[] { 241, 34, 109, 122, 12, 226, 22, 193, 44, 77, 165, 127, 119, 81, 130, 100, 131, 87, 75, 216, 62, 224, 18, 190, 220, 79, 208, 158, 198, 60, 246, 169, 154, 82, 224, 147, 176, 52, 50, 225, 78, 27, 81, 143, 144, 64, 147, 125, 126, 56, 13, 230, 147, 180, 29, 47, 68, 201, 183, 37, 63, 65, 70, 97 }, new byte[] { 229, 161, 11, 41, 170, 116, 239, 105, 40, 81, 246, 240, 231, 170, 170, 182, 35, 24, 251, 216, 194, 220, 201, 210, 1, 49, 216, 118, 176, 153, 131, 104, 22, 189, 223, 30, 82, 135, 143, 140, 122, 201, 214, 90, 123, 90, 38, 193, 55, 226, 162, 56, 237, 43, 251, 162, 58, 114, 143, 34, 150, 248, 53, 200, 207, 196, 187, 248, 208, 189, 130, 233, 133, 195, 195, 47, 179, 47, 182, 182, 63, 116, 226, 31, 224, 251, 228, 45, 34, 240, 213, 243, 119, 115, 7, 149, 4, 114, 59, 233, 54, 249, 212, 178, 220, 37, 49, 37, 214, 12, 231, 101, 41, 235, 147, 92, 168, 17, 100, 65, 248, 87, 19, 120, 180, 72, 78, 45 } });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "Dni", "Nombre", "PasswordHash", "PasswordSalt" },
-                values: new object[] { 77185581m, "German Fonseca P", new byte[] { 197, 190, 101, 27, 190, 140, 194, 228, 11, 195, 169, 170, 18, 141, 127, 137, 103, 114, 213, 150, 3, 72, 171, 125, 193, 49, 172, 7, 59, 161, 51, 129, 112, 62, 38, 166, 247, 233, 152, 82, 84, 134, 227, 182, 82, 86, 34, 30, 31, 34, 67, 161, 155, 41, 81, 99, 206, 131, 46, 123, 62, 238, 240, 65 }, new byte[] { 150, 78, 213, 227, 116, 111, 91, 207, 12, 13, 147, 223, 95, 85, 227, 46, 173, 241, 219, 98, 129, 123, 153, 97, 84, 76, 187, 216, 107, 193, 176, 231, 39, 55, 233, 224, 202, 248, 52, 15, 160, 86, 242, 164, 109, 28, 203, 200, 2, 151, 182, 19, 249, 52, 160, 72, 58, 165, 63, 146, 106, 197, 22, 22, 231, 238, 153, 223, 107, 214, 85, 23, 12, 56, 153, 197, 170, 94, 238, 14, 247, 102, 187, 62, 99, 165, 115, 201, 167, 92, 114, 33, 44, 147, 61, 165, 109, 179, 244, 81, 43, 14, 113, 224, 253, 149, 48, 205, 25, 145, 3, 127, 169, 230, 209, 111, 0, 55, 17, 105, 247, 3, 100, 23, 231, 124, 129, 98 } });
+                values: new object[] { 77185581, "German Fonseca P", new byte[] { 31, 221, 243, 246, 208, 120, 146, 193, 189, 45, 49, 157, 244, 229, 253, 212, 224, 230, 205, 159, 219, 145, 211, 69, 107, 59, 223, 150, 86, 241, 61, 149, 67, 249, 34, 122, 234, 45, 137, 29, 8, 181, 5, 220, 77, 14, 228, 50, 251, 174, 96, 26, 240, 22, 22, 224, 243, 124, 56, 103, 115, 65, 167, 79 }, new byte[] { 240, 220, 214, 84, 201, 20, 249, 192, 114, 18, 1, 209, 175, 3, 3, 154, 77, 3, 237, 156, 55, 106, 84, 93, 117, 174, 249, 99, 245, 20, 25, 50, 230, 192, 75, 122, 172, 134, 223, 202, 172, 70, 139, 120, 48, 213, 226, 19, 155, 116, 94, 236, 160, 152, 169, 172, 125, 188, 118, 205, 89, 110, 77, 194, 114, 176, 124, 102, 204, 49, 10, 136, 0, 9, 241, 57, 40, 173, 65, 208, 59, 11, 253, 154, 153, 195, 15, 179, 42, 213, 222, 223, 25, 127, 26, 45, 104, 61, 194, 135, 6, 146, 54, 206, 242, 104, 237, 187, 106, 62, 2, 139, 188, 244, 121, 215, 50, 75, 187, 200, 198, 219, 178, 101, 74, 53, 38, 167 } });
 
             migrationBuilder.InsertData(
                 table: "Cuentas",
                 columns: new[] { "Id", "Balance", "NombreCuenta", "UsuarioDni" },
                 values: new object[,]
                 {
-                    { 1, 50000m, "Vivienda", 77185581m },
-                    { 2, 90000m, "Vehiculo", 77185581m },
-                    { 3, 90000m, "Universidad", 11111m },
-                    { 4, 70000m, "Excursion", 11111m },
-                    { 5, 170000m, "España", 22222m }
+                    { 1, 50000L, "Vivienda", 77185581 },
+                    { 2, 90000L, "Vehiculo", 77185581 },
+                    { 3, 90000L, "Universidad", 11111 },
+                    { 4, 70000L, "Excursion", 11111 },
+                    { 5, 170000L, "España", 22222 }
                 });
 
             migrationBuilder.InsertData(
@@ -137,16 +137,16 @@ namespace BancoMedellin.Server.Migrations
                 columns: new[] { "Id", "CuentaId", "UsuarioDni" },
                 values: new object[,]
                 {
-                    { 1, 3, 77185581m },
-                    { 2, 4, 77185581m },
-                    { 3, 1, 11111m },
-                    { 4, 2, 11111m }
+                    { 1, 3, 77185581 },
+                    { 2, 4, 77185581 },
+                    { 3, 1, 11111 },
+                    { 4, 2, 11111 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Transferencias",
                 columns: new[] { "Id", "CuentaCredito", "CuentaDebito", "UsuarioDni", "Valor" },
-                values: new object[] { 1, 2, 1, 77185581m, 30000m });
+                values: new object[] { 1, 2, 1, 77185581, 30000L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Autorizadas_CuentaId",

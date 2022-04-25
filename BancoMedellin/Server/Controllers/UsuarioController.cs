@@ -29,7 +29,7 @@ namespace BancoMedellin.Server.Controllers
         }
 
         [HttpGet("{Dni}")]
-        public async Task<ActionResult<Usuario>> GetUsuarioByDni(ulong Dni)
+        public async Task<ActionResult<Usuario>> GetUsuarioByDni(int Dni)
         {
             try
             {

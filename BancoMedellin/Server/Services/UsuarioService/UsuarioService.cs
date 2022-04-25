@@ -43,7 +43,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
             }
         }
         
-        public async Task<Usuario> GetUsuarioByDni(ulong Dni)
+        public async Task<Usuario> GetUsuarioByDni(int Dni)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
             {
                 _util.createPasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
                 Usuario Usuario = new Usuario();
-                Usuario.Dni = Convert.ToUInt64(request.Dni);
+                Usuario.Dni = Convert.ToInt32(request.Dni);
                 Usuario.Nombre = request.Nombre;
                 Usuario.PasswordHash = passwordHash;
                 Usuario.PasswordSalt = passwordSalt;
@@ -85,7 +85,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
         {
             try
             {
-                Usuario usuario = await GetUsuarioByDni(Convert.ToUInt64(request.Dni));
+                Usuario usuario = await GetUsuarioByDni(Convert.ToInt32(request.Dni));
 
                 if (usuario is not null)
                 {

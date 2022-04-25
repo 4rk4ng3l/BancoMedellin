@@ -14,7 +14,7 @@ namespace BancoMedellin.Shared
         [Required]
         public int Id { get; set; }
         [Required]
-        public ulong UsuarioDni { get; set; }
+        public int UsuarioDni { get; set; }
         [Required]
         public int CuentaId { get; set; }
        

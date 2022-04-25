@@ -13,7 +13,7 @@ namespace BancoMedellin.Shared
         [Required]
         public int Id { get; set; }
         [Required]
-        public ulong UsuarioDni { get; set; }
+        public int UsuarioDni { get; set; }
         [Required]
         public int CuentaCredito { get; set; }
 
@@ -21,7 +21,7 @@ namespace BancoMedellin.Shared
         public int CuentaDebito { get; set; }
 
         [Required, ConcurrencyCheck]
-        public ulong Valor { get; set; }
+        public long Valor { get; set; }
         [Timestamp]
         public byte[] Timestamp { get; set; }
 
@@ -29,8 +29,5 @@ namespace BancoMedellin.Shared
         public Cuenta Debito { get; set; }
 
         public Usuario Usuario { get; set; }
-
-
-
     }
 }

@@ -19,7 +19,7 @@ namespace BancoMedellin.Shared
             );
         }
 
-        private static Usuario CreateUsuario(ulong Dni, string Nombre, string Password)
+        private static Usuario CreateUsuario(int Dni, string Nombre, string Password)
         {
             Utilidades utilidades = new Utilidades();
             byte[] passwordHash;

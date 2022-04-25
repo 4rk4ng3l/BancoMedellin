@@ -18,13 +18,26 @@ namespace BancoMedellin.Server.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("GetCuentasUsuario")]
         public async Task<ActionResult<List<Cuenta>>> GetCuentasUsuario()
         {
             try
             {
                 return Ok(await _cuentaService.GetCuentasUsuario());
             }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetCuentasAutorizadas")]
+        public async Task<ActionResult<List<Cuenta>>> GetCuentasAutorizadas()
+        {
+            try
+            {
+                return Ok(await _cuentaService.GetCuentasAutorizadas());
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

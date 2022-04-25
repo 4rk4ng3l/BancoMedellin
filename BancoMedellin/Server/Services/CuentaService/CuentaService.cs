@@ -14,7 +14,7 @@ namespace BancoMedellin.Server.Services.CuentaService
             _httpContextAccesor = httpContextAccessor;
         }
 
-        public async Task<List<Cuenta>> GetAll()
+         public async Task<List<Cuenta>> GetAll()
         {
             var cuentas = await _context.Cuentas.ToListAsync();
             if (cuentas is not null)
@@ -26,29 +26,32 @@ namespace BancoMedellin.Server.Services.CuentaService
                 return new List<Cuenta>();
             }
         }
-
-        public async Task<List<Cuenta>> GetCuentasAutorizadas()
+        public async Task<List<Cuenta>> GetCuentasUsuario()
         {
-            ulong usuarioDni;
+            int idUsuario;
             if (_httpContextAccesor.HttpContext != null)
             {
-                usuarioDni = Convert.ToUInt64(_httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                var cuentas = await _context.Cuentas.Where(c => c.UsuarioDni == usuarioDni).ToListAsync();
+                idUsuario = Convert.ToInt32(_httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var cuentas = await _context.Cuentas.Where(c => c.UsuarioDni == idUsuario).ToListAsync();
                 return cuentas;
             }
             else
             {
-                return new List<Autorizada>();
+                return new List<Cuenta>();
             }
         }
+       
 
-        public async Task<List<Cuenta>> GetCuentasUsuario()
+        public async Task<List<Cuenta>> GetCuentasAutorizadas()
         {
-            ulong idUsuario;
-            if(_httpContextAccesor.HttpContext != null)
+            int usuarioDni;
+            if (_httpContextAccesor.HttpContext != null)
             {
-                idUsuario = Convert.ToUInt64(_httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                var cuentas = await _context.Cuentas.Where(c => c.UsuarioDni == idUsuario).ToListAsync();
+                usuarioDni = Convert.ToInt32(_httpContextAccesor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                
+                var autorizadas = await _context.Autorizadas.Where(aut => aut.UsuarioDni == usuarioDni).Select(x => x.CuentaId).ToListAsync();
+                var cuentas = await _context.Cuentas.Where(c => autorizadas.Contains(c.Id)).ToListAsync();  
+               
                 return cuentas;
             }
             else

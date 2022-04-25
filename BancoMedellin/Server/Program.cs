@@ -5,6 +5,7 @@ global using System.ComponentModel.DataAnnotations;
 global using BancoMedellin.Server.Data;
 global using BancoMedellin.Server.Services.UsuarioService;
 global using BancoMedellin.Server.Services.CuentaService;
+global using BancoMedellin.Server.Services.TransferenciaService;
 
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,7 +17,6 @@ using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<DataContext>(options =>
@@ -25,9 +25,11 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ICuentaService, CuentaService>();
+builder.Services.AddScoped<ITransferenciaService, TransferenciaService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddEndpointsApiExplorer();
 
+//Swagger 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -39,6 +41,8 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+//Jwt Authetication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
