@@ -21,20 +21,6 @@ namespace BancoMedellin.Client.Services.UsuarioService
         {
             try
             {
-                //var requestMessage = new HttpRequestMessage(HttpMethod.Get, "api/usuario/getall");
-                //var token = await _localStorage.GetItemAsStringAsync("token");
-                //requestMessage.Headers.Add("Authorization", "Bearer " + token);
-                ////requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                //var response = await _http.SendAsync(requestMessage);
-                //var responseStatusCode = response.StatusCode;
-
-                //if(responseStatusCode.ToString() == "OK")
-                //{
-                //    Usuarios = await response.Content.ReadFromJsonAsync<List<Usuario>>();
-                //}
-
-                //_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 Usuarios = await _http.GetFromJsonAsync<List<Usuario>>("api/usuario/getall");
             }
             catch (Exception ex)
@@ -48,11 +34,9 @@ namespace BancoMedellin.Client.Services.UsuarioService
             Usuario = await _http.GetFromJsonAsync<Usuario>("api/Usuario/{Dni}");
         }
 
-        public async Task Login(UsuarioDTO usuario)
+        public async Task Login(LoginDto usuario)
         {
             string Token = await _http.GetStringAsync("api/usuario/login");
         }
-
-       
     }
 }

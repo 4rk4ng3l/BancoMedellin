@@ -20,13 +20,15 @@
                                     <span class="h1 fw-bold mb-0">Banco de Medellin</span>
                                 </div>
                                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Ingrese a su cuenta</h5>
-                                <EditForm Model="usuarioDto" OnSubmit="HandleLogin">
+                                <EditForm Model="loginDto" OnValidSubmit="HandleLogin">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
                                     <div class="form-outline mb-4">
-                                        <InputText id="Dni" @bind-Value="usuarioDto.Dni" class="form-control form-control-lg" />
+                                        <InputNumber id="Dni" @bind-Value="loginDto.Dni" class="form-control form-control-lg" />
                                         <label class="form-label" for="Dni">DNI</label>
                                     </div>
                                     <div class="form-outline mb-4">
-                                        <InputText type="password" id="Password" @bind-Value="usuarioDto.Password" class="form-control form-control-lg" />
+                                        <InputText type="password" id="Password" @bind-Value="loginDto.Password" class="form-control form-control-lg" />
                                         <label class="form-label" for="Password">Password</label>
                                     </div>
                                     <button type="submit" class="btn-primary">Ingresar</button>
@@ -42,21 +44,25 @@
 </div>
 
 @code {
-    public UsuarioDTO usuarioDto = new UsuarioDTO();
+    public LoginDto loginDto = new LoginDto();
     string error = "";
 
     async Task HandleLogin()
     {
-        var result = await Http.PostAsJsonAsync("api/usuario/login", usuarioDto);
+        var result = await Http.PostAsJsonAsync("api/usuario/login", loginDto);
 
         var token = await result.Content.ReadAsStringAsync();
         if (result.StatusCode != System.Net.HttpStatusCode.OK)
         {
+            #if DEBUG
             Console.WriteLine("NO OK");
+            #endif
             error = "Usuario o contraseña incorrecta.";
             return;
         }
+        #if DEBUG
         Console.WriteLine(token);
+        #endif
         await LocalStorage.SetItemAsync("token", token);
         await AuthStateProvider.GetAuthenticationStateAsync();
     }

@@ -62,7 +62,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
             }
         }
 
-        public async Task<Usuario> Registrar(UsuarioDTO request)
+        public async Task<Usuario> Registrar(LoginDto request)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace BancoMedellin.Server.Services.UsuarioService
             }
         }
 
-        public async Task<string>Login(UsuarioDTO request)
+        public async Task<string>Login(LoginDto request)
         {
             try
             {

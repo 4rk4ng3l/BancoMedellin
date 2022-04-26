@@ -1,0 +1,16 @@
+﻿@page "/transferenciasterceros"
+@inject HttpClient Http
+@inject AuthenticationStateProvider authStateProvider
+@attribute [Authorize]
+<h3>Transferencias a Terceros</h3>
+<AuthorizeView>
+    <Authorized>
+       
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+
+}

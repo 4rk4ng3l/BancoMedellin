@@ -50,7 +50,7 @@ namespace BancoMedellin.Server.Controllers
         }
         
         [HttpPost("Registrar"), AllowAnonymous]
-        public async Task<ActionResult<Usuario>> Registrar(UsuarioDTO request)
+        public async Task<ActionResult<Usuario>> Registrar(LoginDto request)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace BancoMedellin.Server.Controllers
             
         }
         [HttpPost("Login"), AllowAnonymous]
-        public async Task<ActionResult> Login(UsuarioDTO request)
+        public async Task<ActionResult> Login(LoginDto request)
         {
             try
             {

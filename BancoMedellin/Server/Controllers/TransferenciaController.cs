@@ -9,9 +9,16 @@ namespace BancoMedellin.Server.Controllers
     [Authorize]
     public class TransferenciaController : ControllerBase
     {
-        public TransferenciaController()
+        private readonly ITransferenciaService _transferenciaService;
+        public TransferenciaController(ITransferenciaService transferenciaService)
         {
+            _transferenciaService = transferenciaService;
+        }
 
+        [HttpPost("SaveTransferenciaPropia")]
+        public async Task<ActionResult> SaveTransferenciaPropia(TransferenciaDto transferenciaDto)
+        {
+            return Ok(await _transferenciaService.AddTransferencia(transferenciaDto));
         }
     }
 }
