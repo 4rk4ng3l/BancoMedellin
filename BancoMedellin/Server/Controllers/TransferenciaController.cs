@@ -18,7 +18,14 @@ namespace BancoMedellin.Server.Controllers
         [HttpPost("SaveTransferenciaPropia")]
         public async Task<ActionResult> SaveTransferenciaPropia(TransferenciaDto transferenciaDto)
         {
-            return Ok(await _transferenciaService.AddTransferencia(transferenciaDto));
+            string mensaje = await _transferenciaService.SaveTransferenciaPropia(transferenciaDto);
+            return Ok(mensaje );
+        }
+        [HttpPost("SaveTransferenciaTercero")]
+        public async Task<ActionResult> SaveTransferenciaTercero(TransferenciaDto transferenciaDto)
+        {
+            string mensaje = await _transferenciaService.SaveTransferenciaTercero(transferenciaDto);
+            return Ok(mensaje);
         }
     }
 }

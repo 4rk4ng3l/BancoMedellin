@@ -13,56 +13,116 @@ namespace BancoMedellin.Server.Services.TransferenciaService
             _httpContextAccesor = httpContextAccessor;
             _usuarioDni = Convert.ToInt32(_httpContextAccesor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
-
-        public async Task<int> AddTransferencia(TransferenciaDto transferenciaDto)
+        public async Task<string> SaveTransferenciaPropia(TransferenciaDto transferenciaDto)
         {
             try
             {
-
                 if (_httpContextAccesor.HttpContext != null)
                 {
-                    using (var dbContextTransaction = _context.Database.BeginTransaction())
+                    var cuentaOrigen = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaCredito).FirstOrDefaultAsync();
+                    if (cuentaOrigen is not null && _usuarioDni == cuentaOrigen.UsuarioDni)
                     {
-
-                        //Validamos que la cuenta Origen le pertenezca al usuario
-                        var cuentaUsuario = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaCredito).FirstOrDefaultAsync();
-                        
-                        if (cuentaUsuario is not null && _usuarioDni == cuentaUsuario.UsuarioDni)
+                        var cuentaDestino = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaDebito).FirstOrDefaultAsync();
+                        if (cuentaOrigen.UsuarioDni == cuentaDestino.UsuarioDni)
                         {
-
-                            Transferencia transferencia = new();
-                            transferencia.UsuarioDni = _usuarioDni;
-                            transferencia.CuentaCredito = transferenciaDto.CuentaCredito;
-                            transferencia.CuentaDebito = transferenciaDto.CuentaDebito;
-                            transferencia.Valor = transferenciaDto.Valor;
-
-                            await _context.Transferencias.AddAsync(transferencia);
-
-                            var cuentaCredito = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaCredito).FirstOrDefaultAsync();
-                            if (cuentaCredito.Balance - transferenciaDto.Valor >= 0)
+                            if (cuentaOrigen.Id != cuentaDestino.Id)
                             {
-                                cuentaCredito.Balance = cuentaCredito.Balance - transferenciaDto.Valor;
+                                return await AddTransferencia(transferenciaDto);
                             }
-
-                            var cuentaDebito = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaDebito).FirstOrDefaultAsync();
-                            cuentaDebito.Balance = cuentaDebito.Balance + transferenciaDto.Valor;
-
-                            await _context.SaveChangesAsync();
-
-                            dbContextTransaction.Commit();
-                            return transferencia.Id;
+                            else
+                            {
+                                return "No puede realizar transferencias entre la misma cuenta!.";
+                            }
                         }
                         else
                         {
-                            return "Cuenta Origen no pertenece al usuario!.";
+                            return "Transferencia no valida, debe ser propiertario de ambas cuentas!.";
                         }
+                    }
+                    else
+                    {
+                        return "Cuenta Origen no pertenece al usuario!.";
                     }
                 }
                 else
                 {
                     return "Usuario no autenticado";
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> SaveTransferenciaTercero(TransferenciaDto transferenciaDto)
+        {
+            try
+            {
+                if (_httpContextAccesor.HttpContext != null)
+                {
+                    var cuentaOrigen = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaCredito).FirstOrDefaultAsync();
+                    if (cuentaOrigen is not null && _usuarioDni == cuentaOrigen.UsuarioDni)
+                    {
+                        var cuentaDestino = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaDebito).FirstOrDefaultAsync();
+                        if (cuentaOrigen.UsuarioDni != cuentaDestino.UsuarioDni)
+                        {
+                            return await AddTransferencia(transferenciaDto);
+                        }
+                        else
+                        {
+                            return "Transferencia no valida, debe ser propiertario de ambas cuentas!.";
+                        }
+                    }
+                    else
+                    {
+                        return "Cuenta Origen no pertenece al usuario!.";
+                    }
+                }
+                else
+                {
+                    return "Usuario no autenticado";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        private async Task<string> AddTransferencia(TransferenciaDto transferenciaDto)
+        {
+            try
+            {
+
+
+
+                Transferencia transferencia = new();
+                transferencia.UsuarioDni = _usuarioDni;
+                transferencia.CuentaCredito = transferenciaDto.CuentaCredito;
+                transferencia.CuentaDebito = transferenciaDto.CuentaDebito;
+                transferencia.Valor = transferenciaDto.Valor;
+
+                await _context.Transferencias.AddAsync(transferencia);
+
+                var cuentaCredito = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaCredito).FirstOrDefaultAsync();
+                if (cuentaCredito.Balance - transferenciaDto.Valor >= 0)
+                {
+                    cuentaCredito.Balance = cuentaCredito.Balance - transferenciaDto.Valor;
+                }
+                else
+                {
+                    return "No cuenta con suficientes fondos para realizar la transaccion!.";
+                }
+
+                var cuentaDebito = await _context.Cuentas.Where(c => c.Id == transferenciaDto.CuentaDebito).FirstOrDefaultAsync();
+                cuentaDebito.Balance = cuentaDebito.Balance + transferenciaDto.Valor;
+
+                await _context.SaveChangesAsync();
+
+                return Convert.ToString(transferencia.Id);
+
+            }
+            catch (Exception ex)
             {
                 return ex.Message;
             }

@@ -3,6 +3,7 @@
     public interface ITransferenciaService
     {
         Task<List<Transferencia>> GetTransferenciasByUser();
-        Task<int> AddTransferencia(TransferenciaDto transferencia);
+        Task<string> SaveTransferenciaPropia(TransferenciaDto transferencia);
+        Task<string> SaveTransferenciaTercero(TransferenciaDto transferencia);
     }
 }

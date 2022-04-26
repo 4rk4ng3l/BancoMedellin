@@ -15,6 +15,8 @@
                     else
                     {
                         <EditForm Model="transferenciaDto" Context="formularioTransferencia" OnSubmit="Save">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
                             <div class="form-outline mb-4">
                                 <label class="form-label col-lg-3" for="cuentaCredito">Cuenta Origen</label>
                                 <InputSelect id="cuentaCredito" @bind-Value="transferenciaDto.CuentaCredito" class="form-control col-lg-9">
@@ -81,9 +83,17 @@
     }
     async Task Save()
     {
-        var result = await Http.PostAsJsonAsync("api/transferencia/savetransferenciapropia", transferenciaDto);
-        notificacion = Convert.ToString(result.Content);
+        int Id;
+        var response = await Http.PostAsJsonAsync("api/transferencia/savetransferenciapropia", transferenciaDto);
+        string responseValue = response.Content.ReadAsStringAsync().Result;
+        bool success = int.TryParse(responseValue, out Id);
+        if(success)
+        {
+            notificacion = "El numero de transaccion es " + responseValue;
+        }
+        else
+        {
+            notificacion = "Error: " + responseValue;
+        }
     }
-
-
 }

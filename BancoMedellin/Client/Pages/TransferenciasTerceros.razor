@@ -3,14 +3,97 @@
 @inject AuthenticationStateProvider authStateProvider
 @attribute [Authorize]
 <h3>Transferencias a Terceros</h3>
+
 <AuthorizeView>
     <Authorized>
-       
+        <div class="vh-100" style="background-color: #ffffff">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    @if (cuentasOrigen == null)
+                    {
+                        <p><em>Cargando...</em></p>
+                    }
+                    else
+                    {
+                        <EditForm Model="transferenciaDto" Context="formularioTransferencia" OnSubmit="Save">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="form-outline mb-4">
+                                <label class="form-label col-lg-3" for="cuentaCredito">Cuenta Origen</label>
+                                <InputSelect id="cuentaCredito" @bind-Value="transferenciaDto.CuentaCredito" class="form-control col-lg-9">
+                                    @foreach (var cuenta in cuentasOrigen)
+                                    {
+                                    <option value="@cuenta.Id">@cuenta.NombreCuenta</option>
+                                    }
+                            </InputSelect>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label class="form-label col-lg-3" for="cuentaCredito">Cuenta Origen</label>
+                            <InputSelect id="cuentaCredito" @bind-Value="transferenciaDto.CuentaDebito" class="form-control col-lg-9">
+                                @foreach (var cuenta in cuentasDestino)
+                                    {
+                                    <option value="@cuenta.Id">@cuenta.NombreCuenta</option>
+                                    }
+                            </InputSelect>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label class="form-label col-lg-3" for="Valor">Valor</label>
+                            <InputNumber id="Valor" @bind-Value="transferenciaDto.Valor" class="form-control col-lg-9"></InputNumber>
+                        </div>
+                        <button type="submit" class="btn-primary">Enviar</button>
+
+                    </EditForm>
+                    }
+                    <div>@notificacion</div>
+                </div>
+            </div>
+        </div>
+
     </Authorized>
     <NotAuthorized>
-
+        <span>No autorizado!</span>
     </NotAuthorized>
 </AuthorizeView>
 @code {
+    public TransferenciaDto transferenciaDto = new TransferenciaDto();
+    public string notificacion = "";
+    private int usuarioDni;
+    private List<System.Security.Claims.Claim> claims;
+    private System.Security.Claims.ClaimsPrincipal principal;
+    private List<Cuenta>? cuentasOrigen;
+    private List<Cuenta>? cuentasDestino;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authState { get; set; }
+
+    protected async override void OnParametersSet()
+    {
+        if (authState != null)
+        {
+            principal = (await authState).User;
+            claims = principal.Claims.ToList();
+            usuarioDni = Convert.ToInt32(claims.ElementAt(1).Value);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        cuentasOrigen = await Http.GetFromJsonAsync<List<Cuenta>>("api/cuenta/getcuentasusuario");
+        cuentasDestino = await Http.GetFromJsonAsync<List<Cuenta>>("api/cuenta/getcuentasautorizadas");
+    }
+    async Task Save()
+    {
+        int Id;
+        var response = await Http.PostAsJsonAsync("api/transferencia/savetransferenciatercero", transferenciaDto);
+        string responseValue = response.Content.ReadAsStringAsync().Result;
+        bool success = int.TryParse(responseValue, out Id);
+        if (success)
+        {
+            notificacion = "El numero de transaccion es " + responseValue;
+        }
+        else
+        {
+            notificacion = "Error: " + responseValue;
+        }
+    }
 }

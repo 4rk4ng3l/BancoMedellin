@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+
 namespace BancoMedellin.Shared
 {
     public class TransferenciaDto
@@ -14,5 +15,7 @@ namespace BancoMedellin.Shared
         public int CuentaDebito { get; set; }
         [Required(ErrorMessage = "Es necesario un valor.")]
         public long Valor { get; set; }
+
+
     }
 }

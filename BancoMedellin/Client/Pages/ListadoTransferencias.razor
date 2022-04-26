@@ -1,0 +1,52 @@
+﻿@page "/listadotransferencias"
+@inject HttpClient Http
+@attribute [Authorize]
+<h3>Listado de Transferencias</h3>
+<AuthorizeView>
+    <Authorized>
+        <div class="vh-100" style="background-color: #ffffff">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    @if (cuentasOrigen == null)
+                    {
+                        <p><em>Cargando...</em></p>
+                    }
+                    else
+                    {
+
+                    }
+                    
+                </div>
+                
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <span>No autorizado!</span>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    private int usuarioDni;
+    private List<System.Security.Claims.Claim> claims;
+    private System.Security.Claims.ClaimsPrincipal principal;
+
+    public List<Transferencia>? transferencias;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authState { get; set; }
+
+    protected async override void OnParametersSet()
+    {
+        if (authState != null)
+        {
+            principal = (await authState).User;
+            claims = principal.Claims.ToList();
+            usuarioDni = Convert.ToInt32(claims.ElementAt(1).Value);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        transferencias = await Http.GetFromJsonAsync<List<Transferencia>>("api/transferencia/gettransferenciasusuario");
+    }
+}
