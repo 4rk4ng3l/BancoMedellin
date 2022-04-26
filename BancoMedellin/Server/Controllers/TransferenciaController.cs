@@ -27,5 +27,10 @@ namespace BancoMedellin.Server.Controllers
             string mensaje = await _transferenciaService.SaveTransferenciaTercero(transferenciaDto);
             return Ok(mensaje);
         }
+        [HttpGet("GetTransferenciasByUser")]
+        public async Task<ActionResult<List<Transferencia>>> GetTransferenciasByUser()
+        {
+            return Ok(await _transferenciaService.GetTransferenciasByUser());
+        }
     }
 }

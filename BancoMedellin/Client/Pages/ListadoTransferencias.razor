@@ -7,13 +7,33 @@
         <div class="vh-100" style="background-color: #ffffff">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
-                    @if (cuentasOrigen == null)
+                    @if (transferencias == null)
                     {
                         <p><em>Cargando...</em></p>
                     }
                     else
                     {
-
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id Transferencia</th>
+                                    <th>Id Cuenta Origen</th>
+                                    <th>Id Cuenta Destino</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var transferencia in transferencias)
+                                {
+                                    <tr>
+                                        <td>@transferencia.Id</td>
+                                        <td>@transferencia.CuentaCredito</td>
+                                        <td>@transferencia.CuentaDebito</td>
+                                        <td>@transferencia.Valor</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     }
                     
                 </div>
@@ -47,6 +67,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        transferencias = await Http.GetFromJsonAsync<List<Transferencia>>("api/transferencia/gettransferenciasusuario");
+        transferencias = await Http.GetFromJsonAsync<List<Transferencia>>("api/transferencia/gettransferenciasbyuser");
     }
 }

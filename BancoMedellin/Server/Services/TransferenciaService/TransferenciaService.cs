@@ -93,9 +93,6 @@ namespace BancoMedellin.Server.Services.TransferenciaService
         {
             try
             {
-
-
-
                 Transferencia transferencia = new();
                 transferencia.UsuarioDni = _usuarioDni;
                 transferencia.CuentaCredito = transferenciaDto.CuentaCredito;
